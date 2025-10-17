@@ -1,6 +1,6 @@
 # ProtoEEG
 
-Official repository for the paper:
+Repo for MICCAI 2025 paper:
 
 **"This EEG Looks Like These EEGs: Interpretable Interictal Epileptiform Discharge Detection With ProtoEEG-kNN"**
 
@@ -17,9 +17,9 @@ pip install -r requirements.txt
 
 ## Data
 
-The dataset used in this paper is available at: https://github.com/bdsp-core/SpikeNet2
+The dataset used in this paper is available at: https://github.com/bdsp-core/SpikeNet2. As of 10/17, the team is still in the process of fixing the data availability.
 
-We include sample data in the data directory.
+We include sample data in the sample_data directory.
 
 **Note:** The EEG data storage format is based on an existing codebase. We recommend building your own dataloaders to suit your specific data format and needs.
 
@@ -44,7 +44,7 @@ We include 10 example visualizations in the `viz` directory.
 
 ### Evaluate the model
 ```bash
-python eval_eegprotopnet.py -path ./models/trained_model.pth -topk 4
+python eval_eegprotopnet.py -path ./models/trained_model.pth -topk 10
 ```
 
 ## Training
