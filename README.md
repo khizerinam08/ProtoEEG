@@ -30,6 +30,8 @@ https://drive.google.com/drive/folders/13BC4A71n91kT7yRBfdXatQ7tdoD7MFXd?usp=dri
 
 ## Usage
 
+Note - to use our full model, you will need to access to the entire training set (for the kNN-replacement step). However, users can specify their own dataset in `protopnet/eval_utils.py` and use our trained model with any dataset. 
+
 ### Create channel-wise weights
 ```bash
 python create_spikenet_labels.py
