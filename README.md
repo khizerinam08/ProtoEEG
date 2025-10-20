@@ -13,7 +13,7 @@ This code was built on a pre-release version of [ProtoPNeXt](https://arxiv.org/a
 git clone https://github.com/DennisTang2000/ProtoEEG.git
 cd ProtoEEG
 
-# Install dependencies
+# Create a venv (suggested) and install dependencies
 pip install -r requirements.txt
 ```
 
@@ -30,21 +30,14 @@ We include sample data (n=10) in the sample_data directory.
 The fully trained model is available here:
 https://drive.google.com/drive/folders/13BC4A71n91kT7yRBfdXatQ7tdoD7MFXd?usp=drive_link
 
-## Usage
 
 **Note:** To use our full model, you will need access to the entire training set (for the kNN-replacement step). However, users can specify their own dataset in `protopnet/eval_utils.py` and use our trained model with any dataset.
 
-
-## Pre-trained Model
-The fully trained model is available here:
-https://drive.google.com/drive/folders/13BC4A71n91kT7yRBfdXatQ7tdoD7MFXd?usp=drive_link
-
-
 ### Setup Instructions
 
-1. **Download the model** from the link above and place `trained_model.pth` in the root directory of this repository (same level as the `protopnet/` folder). This is because `torch.load()` needs to import the `protopnet` module to reconstruct the model architecture.
+1. **Download the model** from the link above and place `trained_model.pth` in the root directory of this repository (same level as the `protopnet/` folder). This is because `torch.load()` needs to import the `protopnet` module to reconstruct the model architecture. The model can also be placed in a subdirectory at the same level as `protopnet/`, then load it with `torch.load("subdir/trained_model.pth")`.
 
-2. See `demo_inference.ipynb` for a complete example of how to use the provided model for inference.
+2. See `demo_inference.ipynb` for an example of how to use the provided model for inference.
 
 
 ### Create channel-wise weights
