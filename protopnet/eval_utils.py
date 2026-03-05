@@ -121,14 +121,14 @@ def knn_replace_step(model, model_path):
 
         customDataSet_kw_args = {
             "eeg_data": {
-                "train": "../sn2_data/organized_data/train_dict.pth",
-                "train_push": "../sn2_data/organized_data/train_dict.pth",
-                "eval": "../sn2_data/organized_data/train_dict.pth",
+                "train": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+                "train_push": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+                "eval": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
             },
             "labels": {
-                "train": "../sn2_data/organized_data/sn2_train_labels.npy",
-                "train_push": "../sn2_data/organized_data/sn2_train_labels.npy",
-                "eval": f"../sn2_data/organized_data/sn2{knn_data_name}_train_labels.npy",
+                "train": "/home/muhammad-adeel-ajmal-khan/Documents/repos/ProtoEEG/sn2_data/organized_data/sn2_train_labels.npy",
+                "train_push": "/home/muhammad-adeel-ajmal-khan/Documents/repos/ProtoEEG/sn2_data/organized_data/sn2_train_labels.npy",
+                "eval": "/home/muhammad-adeel-ajmal-khan/Documents/repos/ProtoEEG/sn2_data/organized_data/sn2_train_labels.npy",
             },
             "threshold": 0.5,
             "train_transform": None,
@@ -215,9 +215,9 @@ def get_test_data(name):
 
     customDataSet_kw_args = {
         "eeg_data": {
-            "train": "../sn2_data/organized_data/train_dict.pth",
-            "train_push": "../sn2_data/organized_data/train_dict.pth",
-            "eval": f"../sn2_data/organized_data/{data_dict}_dict.pth",
+            "train": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+            "train_push": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+            "eval": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
         },
         "labels": {
             "train": "../sn2_data/organized_data/sn2_train_labels.npy",

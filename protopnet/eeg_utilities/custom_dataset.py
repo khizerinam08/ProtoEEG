@@ -13,6 +13,7 @@ from torchvision.datasets import ImageFolder
 from torchvision.datasets.folder import default_loader
 
 from ..spikenet_helpers import get_all_transforms, spikenet_transform
+from .lazy_disk_dict import LazyDiskDict
 
 
 class EEG_DataSet(Dataset):
@@ -51,11 +52,22 @@ class EEG_DataSet(Dataset):
         """
 
         self.mode = mode
-        self.data = torch.load(eeg_data[self.mode])
+
+        # Resolve the path for the current mode
+        path = eeg_data[self.mode] if isinstance(eeg_data, dict) else eeg_data
+
+        if os.path.isdir(path):
+            # Lazy-load .npy files from disk (no RAM usage)
+            print(f"Lazy loading from folder: {path}")
+            self.data = LazyDiskDict(path)
+        else:
+            # Original mode: load the full .pth dict into RAM
+            self.data = torch.load(path)
+
         self.labels = np.load(labels[self.mode], allow_pickle=True)
         self.threshold = threshold
 
-        self.signal_fns = list(self.data.keys())
+       
 
     def __len__(self):
         """

@@ -4,6 +4,8 @@ import numpy as np
 import os
 from tqdm import tqdm
 
+from protopnet.eeg_utilities.lazy_disk_dict import LazyDiskDict
+
 def leave_one_channel_in(signal):
 
     # signal: 1sec data chunk
@@ -84,15 +86,29 @@ def leave_one_channel_in(signal):
 
 
 # load in the model weights (must use python 3.7 and keras 2.2.2)
-with open("protopnet/pretrained/model_fold_1_structure.txt", "r") as fff:
+MODEL_BASE = "/home/muhammad-adeel-ajmal-khan/Documents/repos/ProtoEEG/protopnet/pretrained"
+with open(os.path.join(MODEL_BASE, "model_fold_1_structure.txt"), "r") as fff:
     json_string = fff.read()
-model = tf.keras.models.model_from_json(json_string)
-model.load_weights("protopnet/pretrained/model_fold_1_weight.h5")
+    model = tf.keras.models.model_from_json(json_string, custom_objects={'Model': tf.keras.models.Model})
+model.load_weights(os.path.join(MODEL_BASE, "model_fold_1_weight.h5"))
 
 
-train_dict = torch.load("../sn2_data/organized_data/train_dict.pth")  # our data
-test_dict = torch.load("../sn2_data/organized_data/test_dict.pth")
-eeg_ids = list(train_dict.keys()) + list(test_dict.keys())
+# Use LazyDiskDict to access all .npy files in the data folder
+DATA_FOLDER = "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy"
+train_dict = LazyDiskDict(DATA_FOLDER)
+
+# Since all data is in one folder, simply iterate over all keys
+# Check if we are running in subset mode for quick verification
+subset_path = "/home/muhammad-adeel-ajmal-khan/Documents/repos/ProtoEEG/sn2_data/organized_data/sn2_test_subset_labels.npy"
+
+if os.path.exists(subset_path):
+    print(f"Found subset labels at {subset_path}. Processing ONLY these 500 samples.")
+    subset_labels = np.load(subset_path, allow_pickle=True)
+    # Extract keys: The labels array shape is (N, 1, ...), and key is likely at [i][0] [0]
+    eeg_ids = [str(item[0][0]) if isinstance(item[0], (list, np.ndarray)) else str(item[0]) for item in subset_labels]
+else:
+    print("Processing ALL files in data directory.")
+    eeg_ids = list(train_dict.keys())
 
 
 vals_dict = {}
@@ -102,8 +118,10 @@ for eeg_id in tqdm(eeg_ids, desc="Processing EEG IDs"):
     # Initial preprocessing steps remain the same
     try:
         eeg = train_dict[eeg_id]  # [20, 192]
-    except:
-        eeg = test_dict[eeg_id]
+    except KeyError:
+        print(f"Skipping missing ID: {eeg_id}")
+        continue
+    
     eeg = eeg[:, 32:160]  # grab center 128
     eeg = leave_one_channel_in(eeg)  # [37, 4736]
 
@@ -139,4 +157,6 @@ for eeg_id in tqdm(eeg_ids, desc="Processing EEG IDs"):
     del batched_input
 
 
-torch.save(vals_dict, "model_feats/test.pth")
+# Ensure output directory exists
+os.makedirs("model_feats", exist_ok=True)
+torch.save(vals_dict, "model_feats/spikenet_labels.pth")

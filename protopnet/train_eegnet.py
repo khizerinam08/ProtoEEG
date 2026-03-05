@@ -274,9 +274,9 @@ def run(
     custom_dataset_name = "EEG_ConcatDataset"
     customDataSet_kw_args = {
         "eeg_data": {
-            "train": "../sn2_data/organized_data/train_dict.pth",
-            "train_push": "../sn2_data/organized_data/train_dict.pth",
-            "eval": "../sn2_data/organized_data/train_dict.pth",
+            "train": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+            "train_push": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
+            "eval": "/home/muhammad-adeel-ajmal-khan/Documents/snd/real_npy",
         },
         "labels": {
             "train": "../sn2_data/organized_data/sn2_train_labels.npy",

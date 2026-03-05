@@ -375,7 +375,11 @@ class EEG_DataSet(Dataset):
             sample = dataset[0]
 
         """
-        self.data = torch.load(eeg_data)
+        if os.path.isdir(eeg_data):
+            from .eeg_utilities.lazy_disk_dict import LazyDiskDict
+            self.data = LazyDiskDict(eeg_data)
+        else:
+            self.data = torch.load(eeg_data)
         self.labels = np.load(labels, allow_pickle=True)
         self.transform = transform
 
